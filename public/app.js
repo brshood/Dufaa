@@ -113,42 +113,61 @@
         setMessage('Please enter a valid email address.', 'error');
         return;
       }
-
       setMessage('Submitting…');
       try {
-        const res = await fetch('/api/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email })
-        });
-        const data = await res.json();
-        if (!res.ok || !data.ok) throw new Error(data.error || 'Request failed');
-        setMessage('You’re in! Check your inbox on launch day.', 'success');
-        form.reset();
+        if (form.dataset.netlify === 'true') {
+          const formData = new FormData(form);
+          formData.set('name', name);
+          formData.set('email', email);
+          // Netlify forms require urlencoded body
+          const params = new URLSearchParams();
+          for (const [k, v] of formData.entries()) params.append(k, v);
+          const res = await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+          if (!res.ok) throw new Error('Form submit failed');
+          setMessage('You’re in! Check your inbox on launch day.', 'success');
+          form.reset();
+        } else {
+          const res = await fetch('/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email })
+          });
+          const data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || 'Request failed');
+          setMessage('You’re in! Check your inbox on launch day.', 'success');
+          form.reset();
+        }
       } catch (err) {
         setMessage(err.message || 'Something went wrong. Please try again.', 'error');
       }
     });
   }
-  // TextPressure-like effect for the heading (vanilla JS port)
-  (function initTextPressure() {
-    const title = document.getElementById('pressure-title');
-    if (!title) return;
+  // TextPressure-like effect - reusable function
+  function initTextPressure(elementId, insertLineBreakAfter) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
 
-    const originalText = title.textContent;
-    title.textContent = '';
+    const originalText = element.textContent;
+    element.textContent = '';
     const chars = Array.from(originalText);
     const spans = chars.map((ch) => {
       const span = document.createElement('span');
       span.textContent = ch;
       return span;
     });
-    spans.forEach((s) => title.appendChild(s));
-    // Insert a line break after the word "of"
-    const ofIndex = originalText.indexOf('of');
-    if (ofIndex !== -1 && spans[ofIndex + 1]) {
-      const br = document.createElement('br');
-      title.insertBefore(br, spans[ofIndex + 1].nextSibling);
+    spans.forEach((s) => element.appendChild(s));
+    
+    // Insert line break if specified
+    if (insertLineBreakAfter) {
+      const index = originalText.indexOf(insertLineBreakAfter);
+      if (index !== -1 && spans[index + 1]) {
+        const br = document.createElement('br');
+        element.insertBefore(br, spans[index + 1].nextSibling);
+      }
     }
 
     const mouse = { x: 0, y: 0 };
@@ -169,7 +188,7 @@
     window.addEventListener('touchmove', handleMove, { passive: true });
 
     function setInitial() {
-      const rect = title.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
       mouse.x = rect.left + rect.width / 2;
       mouse.y = rect.top + rect.height / 2;
       cursor.x = mouse.x; cursor.y = mouse.y;
@@ -182,8 +201,8 @@
       mouse.x += (cursor.x - mouse.x) / 15;
       mouse.y += (cursor.y - mouse.y) / 15;
 
-      const titleRect = title.getBoundingClientRect();
-      const maxDist = Math.max(80, titleRect.width / 2);
+      const elementRect = element.getBoundingClientRect();
+      const maxDist = Math.max(80, elementRect.width / 2);
 
       spans.forEach((span) => {
         const r = span.getBoundingClientRect();
@@ -203,7 +222,11 @@
 
       raf = requestAnimationFrame(animate);
     })();
-  })();
+  }
+
+  // Initialize TextPressure for both brand and title
+  initTextPressure('pressure-brand');
+  initTextPressure('pressure-title', 'of');
 })();
 
 
