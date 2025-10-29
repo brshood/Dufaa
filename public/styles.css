@@ -179,6 +179,13 @@ input:focus { outline: 2px solid var(--baby-blue); outline-offset: 2px; border-c
   .countdown .time span, .countdown .sep { font-size: clamp(1.8rem, 11vw, 2.2rem); }
 }
 
+/* iPhone XR and similar widths: slightly reduce timer size by ~2px */
+@media (max-width: 430px) {
+  .countdown { gap: .5rem; }
+  .countdown .time { min-width: 44px; }
+  .countdown .time span, .countdown .sep { font-size: calc(10vw - 2px); }
+}
+
 /* Multi-layer parallax cloud animation like ref */
 .sky-layer { position: absolute; inset: 0; background-size: cover; background-repeat: no-repeat; background-position: center; }
 .sky-1 { opacity: .9; animation: driftA 48s ease-in-out infinite; transform: scale(1.1); }

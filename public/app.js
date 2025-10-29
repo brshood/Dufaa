@@ -164,9 +164,12 @@
     // Insert line break if specified
     if (insertLineBreakAfter) {
       const index = originalText.indexOf(insertLineBreakAfter);
-      if (index !== -1 && spans[index + 1]) {
-        const br = document.createElement('br');
-        element.insertBefore(br, spans[index + 1].nextSibling);
+      if (index !== -1) {
+        const afterIdx = index + insertLineBreakAfter.length - 1; // after the matched word
+        if (spans[afterIdx]) {
+          const br = document.createElement('br');
+          element.insertBefore(br, spans[afterIdx].nextSibling);
+        }
       }
     }
 
@@ -226,7 +229,8 @@
 
   // Initialize TextPressure for both brand and title
   initTextPressure('pressure-brand');
-  initTextPressure('pressure-title', 'of');
+  // Insert line break after "out" for better mobile fit
+  initTextPressure('pressure-title', 'out');
 })();
 
 
