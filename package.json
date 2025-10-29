@@ -1,0 +1,20 @@
+{
+  "name": "cloudy-countdown-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Baby-blue landing page with animated clouds, countdown, and CSV newsletter.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-writer": "^1.6.0",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What’s drifting in soon?</title>
+  <meta name="description" content="Countdown to the drop. Subscribe for first dibs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="hero" role="banner">
+    <!-- Animated parallax sky layers to mirror ref -->
+    <div class="sky-layer sky-1" style="background-image:url('/assets/clouds.jpg')"></div>
+    <div class="sky-layer sky-2" style="background-image:url('/assets/clouds.jpg')"></div>
+    <div class="sky-layer sky-3" style="background-image:url('/assets/clouds.jpg')"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <div class="hero__title-wrap">
+        <h1 class="hero__title text-pressure" id="pressure-title">What’s dropping out of the sky soon?</h1>
+      </div>
+      <div class="countdown-wrap">
+      <div class="countdown" aria-live="polite">
+        <div class="time"><span id="days">00</span></div>
+        <div class="sep">:</div>
+        <div class="time"><span id="hours">00</span></div>
+        <div class="sep">:</div>
+        <div class="time"><span id="minutes">00</span></div>
+        <div class="sep">:</div>
+        <div class="time"><span id="seconds">00</span></div>
+      </div>
+      </div>
+      
+      
+      
+    </div>
+  </header>
+
+  <main>
+    <section id="subscribe" class="section section--light section--thin" aria-label="Subscribe to newsletter">
+      <div class="container" style="grid-template-columns: 1fr;">
+        <div class="subscribe" aria-labelledby="subscribe-title">
+          <h2 id="subscribe-title">Stay in touch..</h2>
+          <form id="subscribe-form" novalidate>
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <button class="cta" type="submit">Subscribe</button>
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> All rights reserved.</small>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+<noscript>JavaScript is required for live countdown and form submission. You can still read the FAQ above.</noscript>
+</html>
+
+
